@@ -17,6 +17,30 @@ class Dashboard extends CI_Controller {
 
     public function index()
     {
+        $user = $this->auth_lib->get_user();
+
+        // If user is Checker, redirect to custom Checker Dashboard
+        if ($user['role_slug'] === 'checker') {
+            $this->load->model('Order_model');
+            
+            $pending_inspections = $this->Order_model->get_pending_inspections();
+            $pending_loadings    = $this->Order_model->get_pending_loadings();
+            $recent_inspections  = $this->Order_model->get_recent_inspections_by_checker($user['id'], 5);
+
+            $data = [
+                'title'               => 'Portal Checker Operasional',
+                'page'                => 'admin/dashboard_checker',
+                'pending_inspections' => $pending_inspections,
+                'pending_loadings'    => $pending_loadings,
+                'recent_inspections'  => $recent_inspections,
+                'toast'               => $this->auth_lib->get_toast(),
+            ];
+
+            $this->load->view('layouts/app', $data);
+            return;
+        }
+
+        // Default Admin Dashboard
         $data = [
             'title'             => 'Dashboard',
             'page'              => 'admin/dashboard',

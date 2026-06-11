@@ -178,6 +178,13 @@ class Auth_lib {
                 'submenu' => []
             ],
             [
+                'title' => 'Tugas Saya',
+                'icon' => 'fas fa-truck-fast',
+                'url' => 'driver/tasks',
+                'permission' => 'driver.tasks',
+                'submenu' => []
+            ],
+            [
                 'title' => 'User Management',
                 'icon' => 'fas fa-users',
                 'url' => '#',
@@ -206,6 +213,27 @@ class Auth_lib {
                     ['title' => 'All Permissions', 'url' => 'admin/permissions', 'permission' => 'permissions.view'],
                     ['title' => 'Add Permission', 'url' => 'admin/permissions/create', 'permission' => 'permissions.create'],
                 ]
+            ],
+            [
+                'title' => 'Manajemen Armada',
+                'icon' => 'fas fa-truck',
+                'url' => 'admin/vehicles',
+                'permission' => 'fleets.view',
+                'submenu' => []
+            ],
+            [
+                'title' => 'Order Logistik',
+                'icon' => 'fas fa-dolly',
+                'url' => 'admin/orders',
+                'permission' => 'orders.view',
+                'submenu' => []
+            ],
+            [
+                'title' => 'Cek Fisik Armada',
+                'icon' => 'fas fa-clipboard-check',
+                'url' => 'admin/inspections',
+                'permission' => 'inspections.view',
+                'submenu' => []
             ],
         ];
 

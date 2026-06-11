@@ -1,6 +1,25 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Load environment variables from .env file if it exists
+if (file_exists(FCPATH . '.env')) {
+    $lines = file(FCPATH . '.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        if (strpos($line, '=') !== false) {
+            list($name, $value) = explode('=', $line, 2);
+            $name = trim($name);
+            $value = trim($value);
+            $value = trim($value, '"\'');
+            if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+                putenv(sprintf('%s=%s', $name, $value));
+                $_ENV[$name] = $value;
+                $_SERVER[$name] = $value;
+            }
+        }
+    }
+}
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -530,3 +549,20 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Google Maps API Key
+|--------------------------------------------------------------------------
+*/
+$google_maps_api_key = getenv('GOOGLE_MAPS_API_KEY') ?: '';
+if ($google_maps_api_key === '') {
+	$env_file = FCPATH.'.env';
+	if (is_file($env_file) && is_readable($env_file)) {
+		$env_values = parse_ini_file($env_file, false, INI_SCANNER_RAW);
+		if (isset($env_values['GOOGLE_MAPS_API_KEY'])) {
+			$google_maps_api_key = trim($env_values['GOOGLE_MAPS_API_KEY'], " \t\n\r\0\x0B\"'");
+		}
+	}
+}
+$config['google_maps_api_key'] = $google_maps_api_key;

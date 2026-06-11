@@ -1,10 +1,25 @@
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment / local secrets
+.env
+.env.*
+!.env.example
 
 application/cache/*
 !application/cache/index.html
 
 application/logs/*
 !application/logs/index.html
+
+# Runtime uploads / generated files
+uploads/*
+!uploads/index.html
+application/uploads/*
+!application/uploads/index.html
+public/uploads/*
+!public/uploads/index.html
 
 !application/*/.htaccess
 

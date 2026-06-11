@@ -21,7 +21,9 @@ class Auth extends CI_Controller {
     public function index()
     {
         if ($this->auth_lib->is_logged_in()) {
-            redirect('admin/dashboard');
+            $user = $this->auth_lib->get_user();
+            $redirect_url = ($user['role_slug'] === 'driver') ? 'driver/tasks' : 'admin/dashboard';
+            redirect($redirect_url);
         } else {
             redirect('login');
         }
@@ -46,7 +48,8 @@ class Auth extends CI_Controller {
             if ($user && $user['is_active']) {
                 $this->auth_lib->create_session($user);
                 $this->Auth_model->update_last_login($user['id']);
-                redirect('admin/dashboard');
+                $redirect_url = ($user['role_slug'] === 'driver') ? 'driver/tasks' : 'admin/dashboard';
+                redirect($redirect_url);
                 return;
             }
         }
@@ -143,10 +146,12 @@ class Auth extends CI_Controller {
             $this->input->set_cookie($cookie_data);
         }
 
+        $redirect_url = ($user['role_slug'] === 'driver') ? base_url('driver/tasks') : base_url('admin/dashboard');
+
         $this->_json_or_redirect([
             'success'  => true,
             'message'  => 'Login berhasil! Selamat datang, ' . $user['name'] . '.',
-            'redirect' => base_url('admin/dashboard')
+            'redirect' => $redirect_url
         ]);
     }
 

@@ -123,7 +123,7 @@ class Permission_model extends CI_Model {
      */
     public function get_modules()
     {
-        $result = $this->db->select('DISTINCT module')->get('permissions')->result_array();
+        $result = $this->db->select('module')->distinct()->get('permissions')->result_array();
         return array_column($result, 'module');
     }
 }

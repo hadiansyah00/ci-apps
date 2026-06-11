@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Users extends CI_Controller {
 
-    protected $per_page = 10;
+    protected $per_page = 5;
 
     public function __construct()
     {
